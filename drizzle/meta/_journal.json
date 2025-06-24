@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1750791323301,
+      "tag": "0000_petite_roulette",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1750798231541,
+      "tag": "0001_small_jetstream",
+      "breakpoints": true
+    }
+  ]
+}
