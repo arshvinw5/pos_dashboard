@@ -10,7 +10,7 @@ export default function Page() {
         <Image src="/logo/logo.svg" height={100} width={100} alt="logo" />
       </div>
       {/* right side of the screen */}
-      <div className="h-full lg:flex flex-col items-center justify-center px-4 bg-[#FEFAF6]">
+      <div className="h-full lg:flex flex-col items-center justify-center px-4 bg-[#F5F4ED]">
         <div className="text-center space-y-4 pt-16">
           <h1 className="text-4xl font-bold text-[#2E2A47]">- POS -</h1>
           <p className="text-lg text-[#7E8CA0]">

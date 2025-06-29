@@ -1,17 +1,33 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
-import authors from "./authors";
-import books from "./book";
-
 //import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+
+import accounts from "./accounts";
+import { HTTPException } from "hono/http-exception";
 
 export const runtime = "edge";
 
 const app = new Hono().basePath("/api");
 
-app.route("/authors", authors);
-app.route("/book", books);
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+
+  return c.json({ error: "Internal Server Error" }, 500);
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const routes = app.route("/accounts", accounts);
+
+export const GET = handle(app);
+export const POST = handle(app);
+
+export type AppType = typeof routes;
+
+// app.route("/authors", authors);
+// app.route("/book", books);
 
 // app.get("/hello", clerkMiddleware(), (c) => {
 //   const auth = getAuth(c);
@@ -24,9 +40,6 @@ app.route("/book", books);
 //     message: `Hello ${auth.userId}!`,
 //   });
 // });
-
-export const GET = handle(app);
-export const POST = handle(app);
 
 // app
 //   .get("/hello", (c) => {

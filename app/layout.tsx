@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { dark } from "@clerk/themes";
+import QueryProviders from "@/providers/queryClientProvider";
+import { SheetProvider } from "@/providers/sheet_provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +42,10 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} bg-black`}
         >
-          {children}
+          <QueryProviders>
+            <SheetProvider />
+            {children}
+          </QueryProviders>
         </body>
       </html>
     </ClerkProvider>
