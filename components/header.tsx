@@ -7,7 +7,7 @@ import WelcomeMsg from "./welcome_msg";
 
 const Header = () => {
   return (
-    <header className="relative h-[24vh] w-full md:w-full bg-zinc-700/90">
+    <header className="relative h-[40vh] md:h-[25vh] w-full md:w-full bg-zinc-700/90">
       <div>
         <Image
           src="/imgs/new_db.jpg"

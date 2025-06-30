@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 import { dark } from "@clerk/themes";
 import QueryProviders from "@/providers/queryClientProvider";
@@ -44,6 +45,7 @@ export default function RootLayout({
         >
           <QueryProviders>
             <SheetProvider />
+            <Toaster />
             {children}
           </QueryProviders>
         </body>

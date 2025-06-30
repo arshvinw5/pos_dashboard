@@ -21,3 +21,7 @@ export const useGetAccounts = () => {
 };
 
 //this hook has been made for fetch the data user acc data form the server with tank
+
+//client - This is your Hono API client for making HTTP requests
+// useQuery - The main hook from TanStack Query for fetching data
+// queryKey - A unique key for the query, used for caching and refetching
