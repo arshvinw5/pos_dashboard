@@ -1,0 +1,41 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Edit, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useOpenAccount } from "@/features/accounts/hooks/use_open_accounts";
+
+type Props = {
+  id?: string;
+};
+export const Actions = ({ id }: Props) => {
+  const { onOpen } = useOpenAccount();
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="size-8 p-0">
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            disabled={false}
+            className="cursor-pointer"
+            onClick={() =>
+              id !== undefined && id !== null ? onOpen(id) : null
+            }
+          >
+            <Edit className="size-4 mr-2" />
+            Edit
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+};

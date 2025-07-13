@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { InferResponseType } from "hono";
 import { client } from "@/lib/hono";
+import { Actions } from "./actions";
 
 //we need the type of the account but we have filtered it by status code
 export type ResponseType = InferResponseType<
@@ -65,5 +66,9 @@ export const columns: ColumnDef<ResponseType>[] = [
 
       return <div>{formatted}</div>;
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ];

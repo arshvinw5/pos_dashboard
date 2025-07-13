@@ -38,6 +38,46 @@ const app = new Hono()
 
     return c.json({ data });
   })
+  //to update the account
+  .get(
+    "/:id",
+    clerkMiddleware(),
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().optional(),
+      })
+    ),
+    async (c) => {
+      //get the auth
+      const auth = getAuth(c);
+
+      // destructuring the params
+      const { id } = c.req.valid("param");
+
+      if (!id) {
+        return c.json({ error: "Account ID is required" }, 400);
+      }
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const [data] = await db
+        .select({
+          id: accounts.id,
+          name: accounts.name,
+        })
+        .from(accounts)
+        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+
+      if (!data) {
+        return c.json({ error: "Account not found" }, 404);
+      }
+
+      return c.json({ data });
+    }
+  )
   .post(
     "/",
     clerkMiddleware(),
@@ -98,6 +138,49 @@ const app = new Hono()
         .returning({
           id: accounts.id,
         });
+
+      return c.json({ data }, 200);
+    }
+  )
+  .patch(
+    "/:id",
+    clerkMiddleware(),
+    zValidator("param", z.object({ id: z.string().optional() })),
+    zValidator(
+      "json",
+      insertAccountSchema.pick({
+        //this is where is going to pick specific fields from the schema
+        name: true,
+      })
+    ),
+    async (c) => {
+      //get the auth
+      const auth = getAuth(c);
+
+      // destructuring the params
+      const { id } = c.req.valid("param");
+
+      //get the values from the request body
+      const values = c.req.valid("json");
+
+      if (!id) {
+        return c.json({ error: "Account ID is required" }, 400);
+      }
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      //data to update
+      const [data] = await db
+        .update(accounts)
+        .set(values)
+        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+        .returning();
+
+      if (!data) {
+        return c.json({ error: "Account not found" }, 404);
+      }
 
       return c.json({ data }, 200);
     }
