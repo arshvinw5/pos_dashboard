@@ -1,35 +1,31 @@
 import { client } from "@/lib/hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferResponseType, InferRequestType } from "hono";
+import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  (typeof client.api.accounts)[":id"]["$delete"]
 >;
-type RequestType = InferRequestType<
-  (typeof client.api.accounts)[":id"]["$patch"]
->["json"];
 
-export const useEditAccount = (id?: string) => {
+export const useDeleteAccount = (id?: string) => {
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (json) => {
-      const res = await client.api.accounts[":id"]["$patch"]({
+  const mutation = useMutation<ResponseType, Error>({
+    mutationFn: async () => {
+      const res = await client.api.accounts[":id"]["$delete"]({
         param: { id },
-        json,
       });
       return res.json();
     },
     //this will refetch the accounts after creating a new one
     onSuccess: () => {
-      toast.success("Account Updated!");
+      toast.success("Account Deleted!");
       queryClient.invalidateQueries({ queryKey: ["accounts", { id }] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       //TODO: invalidate summary
     },
     onError: () => {
-      toast.error("Failed to edit account");
+      toast.error("Failed to delete account");
     },
   });
 

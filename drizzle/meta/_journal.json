@@ -15,6 +15,13 @@
       "when": 1750798231541,
       "tag": "0001_small_jetstream",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752601897644,
+      "tag": "0002_volatile_leech",
+      "breakpoints": true
     }
   ]
 }

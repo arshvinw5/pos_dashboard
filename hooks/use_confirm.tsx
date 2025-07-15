@@ -13,6 +13,7 @@ export const useConfirm = (
   title: string,
   description: string
 ): [() => JSX.Element, () => Promise<unknown>] => {
+  //state
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
