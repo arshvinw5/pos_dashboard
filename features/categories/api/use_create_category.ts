@@ -3,33 +3,24 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType, InferRequestType } from "hono";
 import { toast } from "sonner";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$patch"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.accounts)[":id"]["$patch"]
->["json"];
+type ResponseType = InferResponseType<typeof client.api.categories.$post>;
+type RequestType = InferRequestType<typeof client.api.categories.$post>["json"];
 
-export const useEditAccount = (id?: string) => {
+export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
-      const res = await client.api.accounts[":id"]["$patch"]({
-        param: { id },
-        json,
-      });
+      const res = await client.api.categories.$post({ json });
       return res.json();
     },
-    //this will refetch the accounts after creating a new one
+    //this will refetch the categories after creating a new one
     onSuccess: () => {
-      toast.success("Account Updated!");
-      queryClient.invalidateQueries({ queryKey: ["account", { id }] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      //TODO: invalidate summary
+      toast.success("Category created!");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: () => {
-      toast.error("Failed to edit account");
+      toast.error("Failed to create category");
     },
   });
 

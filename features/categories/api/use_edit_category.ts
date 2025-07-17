@@ -4,32 +4,32 @@ import { InferResponseType, InferRequestType } from "hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  (typeof client.api.categories)[":id"]["$patch"]
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  (typeof client.api.categories)[":id"]["$patch"]
 >["json"];
 
-export const useEditAccount = (id?: string) => {
+export const useEditCategory = (id?: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
-      const res = await client.api.accounts[":id"]["$patch"]({
+      const res = await client.api.categories[":id"]["$patch"]({
         param: { id },
         json,
       });
       return res.json();
     },
-    //this will refetch the accounts after creating a new one
+    //this will refetch the category after creating a new one
     onSuccess: () => {
-      toast.success("Account Updated!");
-      queryClient.invalidateQueries({ queryKey: ["account", { id }] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      toast.success("Category Updated!");
+      queryClient.invalidateQueries({ queryKey: ["category", { id }] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       //TODO: invalidate summary
     },
     onError: () => {
-      toast.error("Failed to edit account");
+      toast.error("Failed to edit category");
     },
   });
 
