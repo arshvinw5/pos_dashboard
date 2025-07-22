@@ -6,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { AccountForm } from "./account_form";
+import { AccountForm } from "./transaction_form";
 import { insertAccountSchema } from "@/db/schema";
 import { useGetTransactionById } from "../api/use_get_transaction_by_id";
 import { Loader2 } from "lucide-react";

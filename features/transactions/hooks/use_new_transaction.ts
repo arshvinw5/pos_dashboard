@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type NewAccountState = {
+type NewTransactionState = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -8,7 +8,7 @@ type NewAccountState = {
 
 //return an object ()
 //{} this is a method that returns an object
-export const useNewAccount = create<NewAccountState>((set) => ({
+export const useNewTransaction = create<NewTransactionState>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
