@@ -13,9 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Select } from "@/components/select";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/date_picker";
 import { Trash } from "lucide-react";
+
 import { insertTransactionSchema } from "@/db/schema";
+import { AmountInput } from "@/components/amount_input";
+import { amountToMilliunit } from "@/lib/utils";
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -63,8 +68,14 @@ export const TransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    console.log({ values });
-    //onSubmit(values);
+    const amount = parseFloat(values.amount);
+    const amountInMilliunit = amountToMilliunit(amount);
+
+    onSubmit({
+      ...values,
+      //categoryId: values.categoryId || "",
+      amount: amountInMilliunit,
+    });
   };
 
   const handleDelete = () => {
@@ -77,6 +88,23 @@ export const TransactionForm = ({
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-10 pt-4 px-4 "
       >
+        {/* date picker component */}
+        <FormField
+          name="date"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Date</FormLabel>
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={disabled}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <FormField
           name="accountId"
           control={form.control}
@@ -97,7 +125,7 @@ export const TransactionForm = ({
           )}
         />
         <FormField
-          name="accountId"
+          name="categoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -110,6 +138,58 @@ export const TransactionForm = ({
                   value={field.value}
                   onChange={field.onChange}
                   disabled={disabled}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {/* Payee */}
+        <FormField
+          name="payee"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Payee</FormLabel>
+              <FormControl>
+                <Input
+                  disabled={disabled}
+                  placeholder="Add a payee"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {/* Amount Input */}
+        <FormField
+          name="amount"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <AmountInput
+                  {...field}
+                  placeholder="0.00"
+                  disabled={disabled}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {/* Textarea */}
+        <FormField
+          name="notes"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  value={field.value || ""}
+                  disabled={disabled}
+                  placeholder="Optional notes"
                 />
               </FormControl>
             </FormItem>
