@@ -14,3 +14,12 @@ export function amountToMilliunit(amount: number): number {
 export function milliunitsToAmount(number: number): number {
   return number / 1000;
 }
+
+//format currency
+export function formatCurrency(amount: number): string {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "LKR",
+    minimumFractionDigits: 2,
+  }).format(amount);
+}
