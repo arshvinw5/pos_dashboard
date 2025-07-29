@@ -8,16 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useOpenAccount } from "@/features/accounts/hooks/use_open_accounts";
-import { useDeleteAccount } from "@/features/accounts/api/use.delete.account";
 import { useConfirm } from "@/hooks/use_confirm";
+import { useOpenTransactions } from "@/features/transactions/hooks/use_open_transaction";
+import { useDeleteTransaction } from "@/features/transactions/api/use.delete.transaction";
 
 type Props = {
   id?: string;
 };
 export const Actions = ({ id }: Props) => {
-  const deleteMutation = useDeleteAccount(id);
-  const { onOpen } = useOpenAccount();
+  const deleteMutation = useDeleteTransaction(id);
+  const { onOpen } = useOpenTransactions();
 
   const [ConfirmationDialog, confirm] = useConfirm(
     "Confirm Deletion",

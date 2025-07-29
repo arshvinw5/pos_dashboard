@@ -1,5 +1,5 @@
 "use client";
-import { useBulkDelete } from "@/features/accounts/api/use_bulk_delete";
+import { useBulkDeleteCategories } from "@/features/categories/api/use_bulk_delete_categories";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
@@ -33,10 +33,10 @@ import { useGetCategories } from "@/features/categories/api/use_get_categories";
 const CategoriesPage = () => {
   const newCategory = useNewCategory();
   const categoriesQuery = useGetCategories();
-  const deleteAccounts = useBulkDelete();
+  const deleteCategories = useBulkDeleteCategories();
 
   const categories = categoriesQuery.data || [];
-  const isDisabled = categoriesQuery.isLoading || deleteAccounts.isPending;
+  const isDisabled = categoriesQuery.isLoading || deleteCategories.isPending;
 
   if (categoriesQuery.isLoading) {
     return (
@@ -70,7 +70,7 @@ const CategoriesPage = () => {
           <DataTable
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteAccounts.mutate({ ids });
+              deleteCategories.mutate({ ids });
             }}
             filterKey="name"
             columns={columns}
