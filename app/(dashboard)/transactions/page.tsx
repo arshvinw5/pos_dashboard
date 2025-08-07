@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useGetTransactions } from "@/features/transactions/api/use_get_transactions";
 import { useBulkDeleteTransaction } from "@/features/transactions/api/use_bulk_delete_transaction";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,36 @@ import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNewTransaction } from "@/features/transactions/hooks/use_new_transaction";
 
+import { UploadButton } from "./upload_button";
+import { ImportCard } from "./import_card";
+
+enum VARIANTS {
+  LIST = "list",
+  IMPORT = "import",
+}
+
+const INITIAL_IMPORT_RESULT = {
+  data: [],
+  error: [],
+  meta: [],
+};
+
 const TransactionPage = () => {
+  const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+  const [importResult, setImportResult] = useState<
+    typeof INITIAL_IMPORT_RESULT
+  >(INITIAL_IMPORT_RESULT);
+
+  const onUpload = (results: typeof INITIAL_IMPORT_RESULT) => {
+    setVariant(VARIANTS.IMPORT);
+    setImportResult(results);
+    console.log("Upload results:", results);
+  };
+
+  const cancelImport = () => {
+    setImportResult(INITIAL_IMPORT_RESULT);
+    setVariant(VARIANTS.LIST);
+  };
   const { onOpen } = useNewTransaction();
   const transactionsQuery = useGetTransactions();
   const deleteTransactions = useBulkDeleteTransaction();
@@ -35,6 +65,18 @@ const TransactionPage = () => {
       </div>
     );
   }
+  //once you get the value from onUpload, you can set the variant to IMPORT
+  if (variant === VARIANTS.IMPORT) {
+    return (
+      <>
+        <ImportCard
+          data={importResult.data}
+          onCancel={cancelImport}
+          onSubmit={() => {}}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="max-w-screen-2xl max-auto w-full pb-10 -mt-24 ">
@@ -43,10 +85,13 @@ const TransactionPage = () => {
           <CardTitle className="text-xl line-clamp-1">
             Transactions History
           </CardTitle>
-          <Button onClick={onOpen} size="sm">
-            <Plus className="size-4 mr-2" />
-            Add new
-          </Button>
+          <div className="flex flex-col md:flex-row md:space-x-2 space-x-0 gap-y-2 md:gap-y-0 items-center">
+            <Button onClick={onOpen} size="sm" className="w-full md:w-auto">
+              <Plus className="size-4 mr-2" />
+              Add new
+            </Button>
+            <UploadButton onUpload={onUpload} />
+          </div>
         </CardHeader>
         <CardContent>
           <DataTable

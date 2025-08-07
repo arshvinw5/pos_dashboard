@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn(filterKey)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm border-[#31363F] border-2 rounded-md"
+          className="max-w-sm border-[#31363F] border rounded-md bg-muted"
         />
         {table.getFilteredSelectedRowModel().rows.length > 0 && (
           <Button
@@ -105,12 +105,12 @@ export function DataTable<TData, TValue>({
           </Button>
         )}
       </div>
-      <div className="border-[#31363F] border-2 rounded-lg">
+      <div className="border-[#31363F] border rounded-md overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                className="border-b-2 border-[#31363F]"
+                className="border-b-0 border-[#31363F]"
                 key={headerGroup.id}
               >
                 {headerGroup.headers.map((header) => {
